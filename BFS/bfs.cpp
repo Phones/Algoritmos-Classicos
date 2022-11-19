@@ -4,15 +4,25 @@ using namespace std;
 typedef vector <int> vi;
 #define pb push_back
 
-void dfs(int vis[], int no, vi grafo[])
+
+void bfs(int vis[], int no, vi grafo[])
 {
 	vis[no] = 1;
+	queue <int> fila;
+	fila.push(no);
 
-	for (int i = 0;i < (int)grafo[no].size();i++)
+	while(!fila.empty())
 	{
-		if (!vis[grafo[no][i]])
+		int no_vizinho = fila.front();
+		fila.pop();
+
+		for(int i = 0;i < (int)grafo[no_vizinho].size();i++)
 		{
-			dfs(vis, grafo[no][i], grafo);
+			if (!vis[grafo[no_vizinho][i]])
+			{
+				fila.push(grafo[no_vizinho][i]);
+				vis[grafo[no_vizinho][i]] = 1;
+			}
 		}
 	}
 }
@@ -25,6 +35,7 @@ void imprime_vis(int vis[], int N)
 		printf("i: %d -> %d\n", i, vis[i]);
 	}
 }
+
 
 int main()
 {
@@ -40,6 +51,6 @@ int main()
 	}
 
 	imprime_vis(vis, N);
-	dfs(vis, 0, grafo);
+	bfs(vis, 0, grafo);
 	print_int_array(vis, N);
 }
